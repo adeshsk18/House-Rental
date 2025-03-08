@@ -8,17 +8,14 @@ import {
   TableHead,
   TableRow,
   TablePagination,
-  IconButton,
-  Chip,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Typography,
+  Chip
 } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { message } from 'antd';
 import axios from 'axios';
 
@@ -32,21 +29,19 @@ const VerificationRequests = () => {
   const fetchRequests = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/admin/users?verification=pending',
+        'http://localhost:8000/api/admin/verification-requests',
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }
       );
       
       if (response.data.success) {
-        setRequests(response.data.data.filter(user => 
-          user.type === 'owner' && !user.isVerified
-        ));
+        setRequests(response.data.data);
       } else {
         message.error('Failed to fetch verification requests');
       }
     } catch (error) {
-      console.error('Error fetching requests:', error);
+      console.error('Error fetching verification requests:', error);
       message.error('Error loading verification requests');
     }
   };
@@ -64,29 +59,32 @@ const VerificationRequests = () => {
     setPage(0);
   };
 
-  const handleVerify = async (userId, action) => {
-    try {
-      const response = await axios.patch(
-        `http://localhost:8000/api/admin/users/${userId}/verify`,
-        { status: action === 'approve' },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      );
-
-      if (response.data.success) {
-        message.success(`Owner ${action === 'approve' ? 'verified' : 'rejected'} successfully`);
-        fetchRequests();
-      } else {
-        message.error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error updating verification status:', error);
-      message.error('Failed to update verification status');
-    }
-  };
-
   const handleViewDetails = (request) => {
     setSelectedRequest(request);
     setOpenDialog(true);
+  };
+
+  const handleVerification = async (userId, status) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/admin/verify/${userId}`,
+        { status },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }
+      );
+      
+      if (response.data.success) {
+        message.success(`Verification ${status ? 'approved' : 'rejected'} successfully`);
+        setOpenDialog(false);
+        fetchRequests(); // Refresh the list
+      } else {
+        message.error('Failed to update verification status');
+      }
+    } catch (error) {
+      console.error('Error updating verification:', error);
+      message.error('Error updating verification status');
+    }
   };
 
   return (
@@ -100,8 +98,12 @@ const VerificationRequests = () => {
           boxShadow: 'var(--card-shadow)'
         }}
       >
+        <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
+          Pending Verification Requests
+        </Typography>
+
         <TableContainer>
-          <Table sx={{ minWidth: 650 }}>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -125,40 +127,27 @@ const VerificationRequests = () => {
                     </TableCell>
                     <TableCell>
                       <Chip
-                        label="Pending Verification"
+                        label={request.isVerified ? 'Verified' : 'Pending'}
+                        color={request.isVerified ? 'success' : 'warning'}
                         size="small"
-                        color="warning"
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <IconButton
+                      <Button
+                        variant="outlined"
+                        size="small"
                         onClick={() => handleViewDetails(request)}
-                        color="primary"
-                        size="small"
+                        sx={{ mr: 1 }}
                       >
-                        <VisibilityIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleVerify(request._id, 'approve')}
-                        color="success"
-                        size="small"
-                      >
-                        <CheckCircleIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleVerify(request._id, 'reject')}
-                        color="error"
-                        size="small"
-                      >
-                        <CancelIcon />
-                      </IconButton>
+                        View Details
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
-        
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -176,57 +165,66 @@ const VerificationRequests = () => {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Verification Details</DialogTitle>
-        <DialogContent>
+        <DialogTitle>
+          Verification Request Details
+        </DialogTitle>
+        <DialogContent dividers>
           {selectedRequest && (
             <div className="verification-details">
-              <p><strong>Name:</strong> {selectedRequest.name}</p>
-              <p><strong>Email:</strong> {selectedRequest.email}</p>
-              <p><strong>Phone:</strong> {selectedRequest.phone}</p>
-              <p><strong>Registration Date:</strong> {new Date(selectedRequest.createdAt).toLocaleString()}</p>
-              {selectedRequest.documents && (
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Name:</strong> {selectedRequest.name}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Email:</strong> {selectedRequest.email}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Phone:</strong> {selectedRequest.phone}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Registration Date:</strong>{' '}
+                {new Date(selectedRequest.createdAt).toLocaleString()}
+              </Typography>
+              {selectedRequest.documents && selectedRequest.documents.length > 0 && (
                 <div>
-                  <p><strong>Verification Documents:</strong></p>
-                  {selectedRequest.documents.map((doc, index) => (
-                    <div key={index} className="document-preview">
+                  <Typography variant="subtitle1" gutterBottom>
+                    <strong>Verification Documents:</strong>
+                  </Typography>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                    {selectedRequest.documents.map((doc, index) => (
                       <img
+                        key={index}
                         src={`http://localhost:8000${doc.path}`}
                         alt={`Document ${index + 1}`}
-                        style={{ maxWidth: '100%', marginBottom: '1rem' }}
+                        style={{
+                          maxWidth: '100%',
+                          height: 'auto',
+                          borderRadius: '8px'
+                        }}
                       />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Close</Button>
-          {selectedRequest && (
-            <>
-              <Button
-                onClick={() => {
-                  handleVerify(selectedRequest._id, 'approve');
-                  setOpenDialog(false);
-                }}
-                color="success"
-                variant="contained"
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() => {
-                  handleVerify(selectedRequest._id, 'reject');
-                  setOpenDialog(false);
-                }}
-                color="error"
-                variant="contained"
-              >
-                Reject
-              </Button>
-            </>
-          )}
+          <Button onClick={() => setOpenDialog(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleVerification(selectedRequest._id, false)}
+            color="error"
+          >
+            Reject
+          </Button>
+          <Button
+            onClick={() => handleVerification(selectedRequest._id, true)}
+            color="success"
+            variant="contained"
+          >
+            Approve
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

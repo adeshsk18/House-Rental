@@ -79,7 +79,7 @@ function App() {
           </div>
 
           <footer className="footer-custom">
-            <div className="footer-text">© {date} Copyright: Naraayanan</div>
+            <div className="footer-text">© {date} Copyright: Space Easy</div>
           </footer>
         </Router>
       </div>
