@@ -11,7 +11,6 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-// import { Col, Form, Input, Row, message } from 'antd';
 import { message } from "antd";
 import { Link } from "react-router-dom";
 
@@ -116,122 +115,82 @@ const AllPropertiesCards = ({ loggedIn, searchFilters }) => {
 
   return (
     <>
-      <Container fluid style={{ padding: '0 60px', margin: '40px auto', maxWidth: '1800px' }}>
-        <Row xs={1} md={2} lg={3} style={{ rowGap: '48px', columnGap: '0' }}>
+      <Container fluid style={{ padding: '0 60px', margin: '60px auto', maxWidth: '1800px' }}>
+        <Row xs={1} md={2} lg={3} className="g-4">
           {filteredProperties && filteredProperties.length > 0 ? (
             filteredProperties.map((property) => (
               <Col 
                 key={property._id}
                 className="d-flex"
-                style={{ padding: '0 24px' }}
+                style={{ marginBottom: '30px' }} // Increased bottom margin for more space
               >
                 <Card 
                   style={{ 
                     width: '100%',
-                    border: '1px solid #eee',
-                    borderRadius: '12px', 
+                    border: '1px solid #eaeaea',
+                    borderRadius: '8px', 
                     backgroundColor: '#fff',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}
-                >
-                  <div style={{ padding: '20px 20px 0 20px' }}>
-                    <Card.Img
-                      variant="top"
-                      src={`http://localhost:8000${property.propertyImage[0].path}`}
-                      alt="Property"
-                      style={{ 
-                        height: '280px', 
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                        width: '100%'
-                      }}
-                    />
-                  </div>
-                  <Card.Body style={{ 
-                    padding: '24px 28px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                    overflow: 'visible', // Changed from 'hidden' to prevent button cutoff
                     display: 'flex',
                     flexDirection: 'column',
-                    flex: 1
+                    transition: 'transform 0.3s ease',
+                    position: 'relative', // Added for proper sizing
+                    minHeight: '400px' // Minimum height to ensure consistency
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  <Card.Img
+                    variant="top"
+                    src={`http://localhost:8000${property.propertyImage[0].path}`}
+                    alt="Property"
+                    style={{ 
+                      height: '200px', 
+                      objectFit: 'cover',
+                      width: '100%'
+                    }}
+                  />
+                  <Card.Body style={{ 
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    flex: '1 0 auto',
+                    paddingBottom: '70px' // Add padding at bottom to make room for button
                   }}>
-                    <h3 style={{ 
-                      fontSize: '1.4rem', 
-                      fontWeight: '600',
-                      marginBottom: '20px',
-                      color: '#2c3e50',
-                      lineHeight: '1.4'
-                    }}>
-                      {property.propertyAddress}
-                    </h3>
-                    <div style={{ 
-                      color: '#666', 
-                      fontSize: '1.05rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '16px',
-                      flex: 1
-                    }}>
-                      <p style={{ 
-                        margin: 0, 
-                        color: '#666',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                      }}>
-                        <span style={{ color: '#888' }}>Type:</span>
-                        <span style={{ color: '#2c3e50', fontWeight: '500' }}>{property.propertyType}</span>
-                      </p>
-                      <p style={{ 
-                        margin: 0, 
-                        color: '#666',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                      }}>
-                        <span style={{ color: '#888' }}>For:</span>
-                        <span style={{ color: '#2c3e50', fontWeight: '500' }}>{property.propertyAdType}</span>
-                      </p>
-                      <p style={{ 
-                        margin: 0, 
-                        color: '#666',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                      }}>
-                        <span style={{ color: '#888' }}>Price:</span>
-                        <span style={{ color: '#2c3e50', fontWeight: '500' }}>₹{property.propertyAmt}</span>
-                      </p>
-                      {loggedIn && (
-                        <>
-                          <p style={{ 
-                            margin: 0, 
-                            color: '#666',
-                            display: 'flex',
-                            justifyContent: 'space-between'
-                          }}>
-                            <span style={{ color: '#888' }}>Contact:</span>
-                            <span style={{ color: '#2c3e50', fontWeight: '500' }}>{property.ownerContact}</span>
-                          </p>
-                          <p style={{ 
-                            margin: 0, 
-                            color: '#666',
-                            display: 'flex',
-                            justifyContent: 'space-between'
-                          }}>
-                            <span style={{ color: '#888' }}>Status:</span>
-                            <span style={{ color: '#2c3e50', fontWeight: '500' }}>{property.isAvailable}</span>
-                          </p>
-                        </>
-                      )}
+                    <div>
+                      <p style={{ margin: '0', fontSize: '14px', fontWeight: 'bold' }}>Location:</p>
+                      <p style={{ margin: '0', fontSize: '14px', color: '#666' }}>{property.propertyAddress}</p>
                     </div>
-                    <div style={{ marginTop: 'auto', paddingTop: '28px' }}>
+                    <div>
+                      <p style={{ margin: '0', fontSize: '14px', fontWeight: 'bold' }}>Property Type:</p>
+                      <p style={{ margin: '0', fontSize: '14px', color: '#666' }}>{property.propertyType}</p>
+                    </div>
+                    <div>
+                      <p style={{ margin: '0', fontSize: '14px', fontWeight: 'bold' }}>Ad Type:</p>
+                      <p style={{ margin: '0', fontSize: '14px', color: '#666' }}>{property.propertyAdType}</p>
+                    </div>
+                    <div style={{ marginTop: '5px' }}>
+                      <p style={{ margin: '0', fontSize: '14px', color: '#3498db' }}>
+                        For more details, click on get info
+                      </p>
+                    </div>
+                    <div style={{ 
+                      position: 'absolute', 
+                      bottom: '20px', 
+                      left: '20px',
+                      width: 'calc(100% - 40px)'
+                    }}>
                       {!loggedIn ? (
                         <Link to="/login" style={{ textDecoration: 'none' }}>
                           <Button 
                             style={{
-                              backgroundColor: '#007bff',
+                              backgroundColor: '#3498db',
                               border: 'none',
-                              padding: '12px 32px',
-                              borderRadius: '6px',
-                              fontSize: '1rem',
+                              padding: '8px 20px',
+                              borderRadius: '4px',
+                              fontSize: '14px',
                               fontWeight: '500'
                             }}
                           >
@@ -243,11 +202,11 @@ const AllPropertiesCards = ({ loggedIn, searchFilters }) => {
                           <Button
                             onClick={() => handleShow(property._id)}
                             style={{
-                              backgroundColor: '#007bff',
+                              backgroundColor: '#3498db',
                               border: 'none',
-                              padding: '12px 32px',
-                              borderRadius: '6px',
-                              fontSize: '1rem',
+                              padding: '8px 20px',
+                              borderRadius: '4px',
+                              fontSize: '14px',
                               fontWeight: '500'
                             }}
                           >
@@ -286,7 +245,7 @@ const AllPropertiesCards = ({ loggedIn, searchFilters }) => {
               {allProperties.find(p => p._id === propertyOpen).propertyImage.map((image, idx) => (
                 <Carousel.Item key={idx}>
                   <img
-                    src={`http://localhost:8001${image.path}`}
+                    src={`http://localhost:8000${image.path}`}
                     alt={`Image ${idx + 1}`}
                     className="d-block w-100"
                   />

@@ -85,27 +85,45 @@ const AllProperties = () => {
   }, [image]);
 
   const handleDelete = async (propertyId) => {
-    let assure = window.confirm("are you sure to delete");
-    if (assure) {
-      try {
-        const response = await axios.delete(
-          `http://localhost:8001/api/owner/deleteproperty/${propertyId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        if (response.data.success) {
-          message.success(response.data.message);
-          getAllProperty();
-        } else {
-          message.error(response.data.message);
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/owner/deleteproperty/${propertyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      } catch (error) {
-        console.log(error);
+      );
+
+      if (response.data.success) {
+        message.success("Property listing and all related bookings have been deleted successfully");
+        getAllProperty(); // Refresh the list
+      } else {
+        message.error(response.data.message || "Failed to delete property");
       }
+    } catch (error) {
+      console.error("Error deleting property:", error);
+      message.error(
+        error.response?.data?.message || 
+        "An error occurred while deleting the property. Please try again."
+      );
+    }
+  };
+
+  const confirmDelete = (propertyId) => {
+    const property = allProperties.find(p => p._id === propertyId);
+    if (!property) return;
+
+    const confirmMessage = `Are you sure you want to delete this property listing?\n\n` +
+      `Property Details:\n` +
+      `- Type: ${property.propertyType}\n` +
+      `- Address: ${property.propertyAddress}\n` +
+      `- Amount: ₹${property.propertyAmt}\n\n` +
+      `WARNING: This will also delete all booking history related to this property.\n` +
+      `This action cannot be undone.`;
+
+    if (window.confirm(confirmMessage)) {
+      handleDelete(propertyId);
     }
   };
 
@@ -152,7 +170,22 @@ const AllProperties = () => {
       <TableContainer component={Paper} sx={{ 
         boxShadow: 'none',
         borderRadius: 'var(--border-radius)',
-        overflow: 'hidden'
+        overflow: 'auto',
+        maxWidth: '100%',
+        '&::-webkit-scrollbar': {
+          height: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: '#f1f1f1',
+          borderRadius: '4px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: '#888',
+          borderRadius: '4px',
+          '&:hover': {
+            background: '#555',
+          },
+        },
       }}>
         <Table
           className="modern-table"
@@ -217,7 +250,7 @@ const AllProperties = () => {
                   <Button
                     variant="outline-danger"
                     className="modern-button outline-danger"
-                    onClick={() => handleDelete(property._id)}
+                    onClick={() => confirmDelete(property._id)}
                   >
                     Delete
                   </Button>

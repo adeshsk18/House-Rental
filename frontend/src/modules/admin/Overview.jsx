@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Paper, Typography } from '@mui/material';
+import { Paper, Typography, Button } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from 'axios';
 import { message } from 'antd';
 
@@ -16,27 +17,41 @@ const Overview = () => {
     pendingVerifications: 0,
     recentActivities: []
   });
+  const [loading, setLoading] = useState(false);
 
   const fetchStats = async () => {
+    setLoading(true);
     try {
+      console.log('Fetching admin stats...');
       const response = await axios.get('http://localhost:8000/api/admin/stats', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       
       if (response.data.success) {
+        console.log('Stats received:', response.data.data);
         setStats(response.data.data);
       } else {
+        console.error('Failed to fetch statistics:', response.data);
         message.error('Failed to fetch statistics');
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
       message.error('Error loading dashboard statistics');
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchStats();
+    // Refresh stats every minute
+    const interval = setInterval(fetchStats, 60000);
+    return () => clearInterval(interval);
   }, []);
+
+  const handleRefresh = () => {
+    fetchStats();
+  };
 
   const StatCard = ({ icon, title, value, color }) => (
     <Paper
@@ -86,6 +101,18 @@ const Overview = () => {
 
   return (
     <div className="fade-in">
+      <div className="d-flex justify-content-end mb-3">
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<RefreshIcon />}
+          onClick={handleRefresh}
+          disabled={loading}
+        >
+          Refresh Stats
+        </Button>
+      </div>
+
       <Row className="g-4">
         <Col xs={12} md={6} lg={3}>
           <StatCard
@@ -167,6 +194,11 @@ const Overview = () => {
                   </div>
                 </div>
               ))}
+              {stats.recentActivities.length === 0 && (
+                <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
+                  No recent activities
+                </Typography>
+              )}
             </div>
           </Paper>
         </Col>

@@ -66,7 +66,7 @@ const AdminHome = () => {
       <Navbar expand="lg" className="navbar-custom">
         <Container fluid>
           <Navbar.Brand>
-            <h2>Neel Rentals</h2>
+            <h2>Space Easy</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
