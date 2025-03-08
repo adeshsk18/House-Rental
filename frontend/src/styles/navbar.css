@@ -1,0 +1,82 @@
+.navbar-custom {
+  background-color: white;
+  padding: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.navbar-custom .nav-link {
+  color: var(--text-primary) !important;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: all var(--transition-speed);
+  font-weight: 500;
+  position: relative;
+}
+
+.navbar-custom .nav-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--secondary-color);
+  transition: width var(--transition-speed);
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--secondary-color) !important;
+}
+
+.navbar-custom .nav-link:hover:after {
+  width: 100%;
+}
+
+.navbar-custom .navbar-brand {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.navbar-custom .navbar-brand h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.navbar-custom .navbar-toggler {
+  color: var(--primary-color);
+  border: none;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed);
+}
+
+.navbar-custom .navbar-toggler:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.navbar-custom .navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+  .navbar-custom .navbar-collapse {
+    background-color: white;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+  }
+
+  .navbar-custom .nav-link {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+  }
+
+  .navbar-custom .nav-link:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+  }
+} 

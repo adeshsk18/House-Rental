@@ -1,0 +1,85 @@
+[{
+  "_id": {
+    "$oid": "672f78a27f54a510e817b1f0"
+  },
+  "name": "Naraayanan",
+  "email": "naraayanan2003@gmail.com",
+  "password": "$2a$10$v24r1tZjIKDOreyAWcRw0OXNcnt5x1bSZf24BKbbUfWT7PWkyjoF.",
+  "type": "Owner",
+  "granted": "granted",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f7ba17f54a510e817b1f9"
+  },
+  "name": "Neelraj",
+  "email": "neelraj0808@gmail.com",
+  "password": "$2a$10$E6vOP2X1p7a3PRZ.xT9/eu7D9.MAHBB.eVcjYXepey6dU7XWRNyvi",
+  "type": "Renter",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f78a27f54a510e817b1f2"
+  },
+  "name": "Admin",
+  "email": "admin@gmail.com",
+  "password": "$2a$10$5IpcxLXQERUOx3Kz66KQFeNOkAtJGpIuQE.xpVclxX1Ny25hzSWIq",
+  "type": "Admin",
+  "granted": "granted",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f83cc7f54a510e817b236"
+  },
+  "name": "Elanthirayan",
+  "email": "elanthirayan@gmail.com",
+  "password": "$2a$10$kyNDZxyO9X0tWuaDCLx/B.CJYi.sk7Ec5eTiYSAWbupaZPPPuok3C",
+  "type": "Owner",
+  "granted": "granted",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f83ee7f54a510e817b239"
+  },
+  "name": "Diwakar",
+  "email": "diwakar@gmail.com",
+  "password": "$2a$10$HNh/6fjRNycx3S2aL7kfWulStVC89VSG./c7sgriR.v/sPYtsewZi",
+  "type": "Owner",
+  "granted": "granted",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f84257f54a510e817b23c"
+  },
+  "name": "Dhaya",
+  "email": "dhaya@gmail.com",
+  "password": "$2a$10$0YbSMf1pGuAx0be/yEoefe5H7if7WtGQQc/PUlJOdRKVUJ1QQq5tq",
+  "type": "Owner",
+  "granted": "granted",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f84427f54a510e817b23f"
+  },
+  "name": "Albert",
+  "email": "albert@gmail.com",
+  "password": "$2a$10$6ePDGHOgaxPM1hZZRGca8.PKSuakO2Jw4YcAIYncuUKHnDv4PELjC",
+  "type": "Renter",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672f84517f54a510e817b242"
+  },
+  "name": "Vishwa",
+  "email": "vishwa@gmail.com",
+  "password": "$2a$10$4fj3XEkQ72SCc5FE4hgl.eWMbWx3dpCVP9wTNsY5SFEjmpqb.ewm6",
+  "type": "Renter",
+  "__v": 0
+}]

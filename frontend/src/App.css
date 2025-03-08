@@ -1,0 +1,231 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+/* Links */
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  margin-right: 20px;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+/* Main App Container */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  box-shadow: var(--card-shadow);
+}
+
+/* Content Area */
+.content {
+  flex: 1;
+  background-color: var(--background-color);
+  padding-bottom: 2rem;
+}
+
+/* Property Content Section */
+.property-content {
+  padding: 2rem 0;
+  background-color: var(--background-color);
+}
+
+/* Footer */
+.footer-custom {
+  background-color: white;
+  color: var(--text-primary);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Cards */
+.card {
+  margin-right: 20px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  background-color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card .card-body .card-title img {
+  width: 100%;
+  height: 150px;
+  border-radius: var(--border-radius);
+}
+
+/* Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: var(--card-shadow);
+}
+
+.chat-container h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.message-window {
+  overflow-x: auto;
+  padding: 10px;
+  width: 100%;
+  max-height: 200px;
+  height: 100px;
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  background-color: white;
+}
+
+/* Messages */
+.message {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: var(--border-radius);
+  color: white;
+  box-shadow: var(--card-shadow);
+}
+
+/* Input Container */
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.input-container textarea {
+  width: 100%;
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  background-color: white;
+  color: var(--text-primary);
+}
+
+.input-container button {
+  padding: 10px 15px;
+  color: white;
+  font-size: 12px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s ease;
+}
+
+.input-container button:hover {
+  background-color: var(--primary-color);
+}
+
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  background-color: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+/* Table Header Styling */
+.table-custom th {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Table Body Styling */
+.table-custom td {
+  background-color: white;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Table Row Hover Effect */
+.table-custom tr:hover td {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .filter-container input,
+  .filter-container select {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .card {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .input-container textarea {
+    width: 100%;
+  }
+}
